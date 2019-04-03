@@ -75,12 +75,25 @@
 #
 
 from typing import List
+from operator import sub
 
 
 class Solution:
     def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
+        start = 0
+        currentGas = 0
+        lackGas = 0
+        for idx, restGas in enumerate(map(sub, gas, cost)):
+            currentGas += restGas
+            if currentGas < 0:
+                start = idx + 1
+                lackGas += currentGas
+                currentGas = 0
+
+        return start if lackGas + currentGas >= 0 else -1
 
 
+"""
 import unittest
 
 
@@ -95,7 +108,17 @@ class TestCanCompleteCircuit(unittest.TestCase):
         cost = [3, 4, 5, 1, 2]
         self.assertEqual(Solution().canCompleteCircuit(gas, cost), 3)
 
+    def test_canCompleteCase3(self):
+        gas = [5, 8, 2, 8]
+        cost = [6, 5, 6, 6]
+        self.assertEqual(Solution().canCompleteCircuit(gas, cost), 3)
+
     def test_canNotComplete(self):
         gas = [2, 3, 4]
         cost = [3, 4, 4]
         self.assertEqual(Solution().canCompleteCircuit(gas, cost), -1)
+
+
+if __name__ == '__main__':
+    unittest.main()
+"""
