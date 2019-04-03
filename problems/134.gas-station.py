@@ -80,17 +80,19 @@ from operator import sub
 
 class Solution:
     def canCompleteCircuit(self, gas: List[int], cost: List[int]) -> int:
-        start = 0
-        currentGas = 0
-        lackGas = 0
-        for idx, restGas in enumerate(map(sub, gas, cost)):
-            currentGas += restGas
-            if currentGas < 0:
-                start = idx + 1
-                lackGas += currentGas
-                currentGas = 0
+        maxAccuGas = -1
+        maxIndex = 0
+        sumGas = 0
+        restGasList = list(map(sub, gas, cost))
 
-        return start if lackGas + currentGas >= 0 else -1
+        for idx in range(len(restGasList)-1, -1, -1):
+            restGas = restGasList[idx]
+            sumGas += restGas
+            if sumGas > maxAccuGas:
+                maxAccuGas = sumGas
+                maxIndex = idx
+
+        return -1 if sumGas < 0 else maxIndex
 
 
 """
