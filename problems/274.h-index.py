@@ -44,8 +44,7 @@ class Solution:
         countList = [0 for i in range(paperCount+1)]
 
         for citation in citations:
-            countIndex = citation if citation < paperCount else paperCount
-            countList[countIndex] += 1
+            countList[min(citation, paperCount)] += 1
 
         for idx in range(paperCount, 0, -1):
             if countList[idx] >= idx:
